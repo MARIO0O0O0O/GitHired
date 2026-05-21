@@ -1,0 +1,20 @@
+Project: FOLIO — AI-Powered Professional Identity & Job Application System
+Owner: Mario A. Espindola (Marioespindola00@gmail.com)
+Orchestrator: Goose
+Worker: Gemini CLI
+Database: Supabase PostgreSQL
+Dashboard: Standalone React + Vite on Netlify — NOT the electronic portfolio
+Output directory: ~/jobapps/output/
+
+Owner summary:
+  10+ years public sector HR, MPA Cal State Fullerton.
+  City of Santa Ana, Anaheim, Fountain Valley, Robert Half Staffing.
+  Union President COSA. Professor HR/Public Admin.
+
+Critical rules:
+  - Never invent career data
+  - Never auto-submit applications
+  - Human approval required before any DB write
+  - Every session ends with its defined completion signal
+  - Goose advances the recipe only after the signal is received
+  - The dashboard is standalone — do not touch the portfolio

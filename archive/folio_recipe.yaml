@@ -1,0 +1,81 @@
+version: "1.0"
+name: folio_parallel_build
+description: >
+  Full FOLIO build. Goose orchestrates. Gemini CLI is the worker.
+  Human approval gates protect the database and all submissions.
+orchestrator: goose
+worker: gemini-cli
+context_file: ~/jobapps/GEMINI.md
+hints_file: ~/jobapps/.goosehints
+
+gates:
+  - id: inventory_approval
+    type: human_approval
+    description: >
+      Open ~/jobapps/output/master_professional_inventory.md.
+      Review all rows. Correct any errors.
+      Change STATUS: DRAFT to STATUS: APPROVED.
+      Save the file, then signal Goose to continue.
+    blocks: [session_d, session_f]
+
+agents:
+  - id: session_a
+    name: "A: Resume Inventory Extractor"
+    agent_file: ~/jobapps/agents/hr_specialist.md
+    prompt_file: ~/jobapps/prompts/session_a_inventory.md
+    runs: sequential
+    completion_signal: "SESSION A COMPLETE"
+    gate_after: inventory_approval
+
+  - id: session_b
+    name: "B: Supabase Schema Builder"
+    agent_file: ~/jobapps/agents/db_engineer.md
+    prompt_file: ~/jobapps/prompts/session_b_supabase.md
+    runs: parallel
+    depends_on: []
+    completion_signal: "SESSION B COMPLETE"
+
+  - id: session_c
+    name: "C: Dashboard Backend Wiring"
+    agent_file: ~/jobapps/agents/db_engineer.md
+    prompt_file: ~/jobapps/prompts/session_c_dashboard_backend.md
+    runs: parallel
+    depends_on: [session_b]
+    completion_signal: "SESSION C COMPLETE"
+
+  - id: session_d
+    name: "D: ATS Resume & Cover Letter Generator"
+    agent_file: ~/jobapps/agents/hr_specialist.md
+    prompt_file: ~/jobapps/prompts/session_d_resume_gen.md
+    runs: parallel
+    depends_on: [inventory_approval]
+    completion_signal: "SESSION D COMPLETE"
+
+  - id: session_e
+    name: "E: Job Search Agent"
+    agent_file: ~/jobapps/agents/job_searcher.md
+    prompt_file: ~/jobapps/prompts/session_e_job_search.md
+    runs: parallel
+    depends_on: []
+    completion_signal: "SESSION E COMPLETE"
+
+  - id: session_f
+    name: "F: Match Engine & Qualification Checker"
+    agent_file: ~/jobapps/agents/match_engine.md
+    prompt_file: ~/jobapps/prompts/session_f_match_engine.md
+    runs: parallel
+    depends_on: [session_b, inventory_approval]
+    completion_signal: "SESSION F COMPLETE"
+
+  - id: session_g
+    name: "G: Dashboard Frontend Builder"
+    agent_file: ~/jobapps/agents/db_engineer.md
+    prompt_file: ~/jobapps/prompts/session_g_dashboard_frontend.md
+    runs: parallel
+    depends_on: [session_c]
+    completion_signal: "SESSION G COMPLETE"
+
+outputs:
+  dir: ~/jobapps/output/
+  consolidate_on_complete: true
+  final_report: ~/jobapps/output/folio_build_report.md
