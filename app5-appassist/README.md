@@ -1,5 +1,6 @@
 # App 5 — Application Assistant
-- What it does: Provides ATS keyword gap analysis and prepares drafts for application forms.
-- Input it needs: Job description, match report, and doc generator outputs.
-- Output it produces: Application form pre-fill drafts and keyword optimization advice.
-- Status: READY TO BUILD
+Status: COMPLETE — 2026-05-21
+Function: Generates targeted application packages (resume + cover letter + notes) per job lead
+Input: Supabase profile + job_leads file
+Output: ~/jobapps/output/applications/[company]/
+Packages: 5 generated
