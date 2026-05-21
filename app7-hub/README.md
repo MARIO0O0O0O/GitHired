@@ -1,5 +1,13 @@
-# App 7 — Hub
-- What it does: Serves as the central dashboard UI and backend orchestrator for the FOLIO workflow.
-- Input it needs: Netlify Functions, React frontend code, and Supabase connection.
-- Output it produces: A functional web-based control panel for FOLIO.
-- Status: DEFERRED
+# App 7 — GitHired Hub Dashboard
+Status: COMPLETE — 2026-05-21
+Live URL: https://githired-397.netlify.app
+Stack: React + Vite + Supabase + Netlify
+Panels: ProfileCard, PipelineBoard, MatchScores, QuickActions
+Data: Live from Supabase (read-only, RLS enabled)
+
+## Build Instructions
+```bash
+npm install
+npm run build
+netlify deploy --prod --dir=dist
+```
