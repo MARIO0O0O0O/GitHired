@@ -9,3 +9,6 @@ output/master_professional_inventory.md
 output/*.pdf
 output/*.docx
 supabase/.temp/
+
+# Local Netlify folder
+.netlify
